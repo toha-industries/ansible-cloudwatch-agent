@@ -12,12 +12,12 @@
 
   - name: download installer
     get_url:
-      url: https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
-      dest: /tmp/aws-cw-agent/cw-agent.deb
+      url: https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm
+      dest: /tmp/aws-cw-agent/cw-agent.rpm
 
   - name: install agent
-    shell: dpkg -i -E /tmp/aws-cw-agent/cw-agent.deb
-      
+    shell: rpm -U /tmp/aws-cw-agent/cw-agent.rpm
+
   - name: setup agent region
     blockinfile:
        path: /root/.aws/config
@@ -30,7 +30,7 @@
         [AmazonCloudWatchAgent]
         region = {{ aws_cw_region }}
     notify: restart-cw-agent
-  
+
   - name: remove temp dir
     file:
       path: /tmp/aws-cw-agent
